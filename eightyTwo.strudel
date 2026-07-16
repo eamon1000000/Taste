@@ -1,0 +1,105 @@
+
+setCps(130/60/4)
+
+
+let ARPmelody = "[a4 c5 e5 a5 ~ ~ e5 ~ c5 a4 ~ ~ c5 ~ a4 ~ a4 c5 e5 a5 ~ ~ f5 e5 d5 c5 ~ ~ b4 ~ a4 ~]/2"
+let ARPmelody2 = "[a4 c5 e5 g5 ~ ~ e5 ~ c5 g4 ~ ~ c5 ~ a4 ~ a4 c5 e5 f5 ~ ~ d5 e5 c5 g5 ~ ~ b4 ~ c4 c4]/2"
+
+
+//intro
+let intro = stack(
+  note(ARPmelody2).s("square").adsr("0.01:0.08:0.2:0.2").lpf(2800).echo(3, 1/16, 0.4).gain(0.3),
+  note(ARPmelody2).s("gm_fx_atmosphere:0").adsr("0.2:0.3:0.3:0.2").lpf(1600).gain(0.15).lpenv(rand.range(0.5, 3))
+)
+
+//build
+let buildUp = stack(
+  note("<[a2*8,a3*8]!1[f2*8,f3*8]!1>*1").s("gm_synth_bass_2:2").adsr("0.08:0.12:0.1:0.1").lpf(2200).lpenv(rand.range(0.5,4)).gain(0.6),
+  note(ARPmelody2).s("gm_fx_atmosphere:0").adsr("0.17:0.2:0.2:0.15").chorus(5).lpf(2500).lpenv(rand.range(0.5,4)),
+  // note(ARPmelody2).s("square").adsr("0.02:0.1:0.2:0.25").lpf(2500).echo(3, 1/16, 0.4).gain(0.3)
+)
+
+//groove
+let groove = stack(
+  note("<[a2*8,a3*8]!4[f2*8,f3*8]!4>/2").s("gm_synth_bass_2:2, gm_contrabass").adsr("0.1:0.15:0.1:0.1").lpf(2500).lpenv(rand.range(0.5,4)).gain(0.8),
+  note("[[a2 ~ ~ ~ e4 ~ ~ ~ a2 ~ ~ a2 ~ ~ c4 ~]!2 [f2 ~ ~ ~ c4 ~ ~ ~ f2 ~ ~ f2 ~ ~ <e4 c4> ~]!2]/4")
+    .s("square").adsr("0.02:0.1:0.2:0.25").lpf(2700).delay(0.2).echo(3, 1/16, 0.4).gain(0.4),
+  s("ballwhistle:1").struct("[1 0 0 1 0 0 1 0 0 0 1 1 1 0 1 0]/2").gain(0.55).adsr("0.1:0.1:0.1:0.2")
+)
+
+//groove2
+let groove2 = stack(
+  note("<[a2*8,a3*8]!4[f2*8,f3*8]!4>/2").s("gm_synth_bass_2:2, gm_contrabass").adsr("0.1:0.15:0.1:0.1").lpf(2500).lpenv(rand.range(0.5,4)).gain(0.8),
+  note("[[a2 ~ ~ ~ ~ ~ ~ ~ a2 ~ ~ ~ ~ ~ c4 ~]!2 [f2 ~ ~ ~ ~ ~ ~ ~ f2 ~ ~ ~ ~ ~ <e4 c4> ~]!2]/4")
+    .s("square").adsr("0.02:0.1:0.2:0.25").lpf(2700).delay(0.2).echo(3, 1/8, 0.4).gain(0.4),
+)
+
+//chorus?
+let chorus = stack(
+  note("<[a2*8,a3*8]!4[f2*8,f3*8]!4>*4").s("gm_synth_bass_2:2, gm_contrabass").adsr("0.1:0.15:0.1:0.1").lpf(2500).lpenv(rand.range(0.5,4)).gain(0.9),
+  note("[[a2 ~ ~ ~ e4 ~ ~ ~ a2 ~ ~ a2 ~ ~ c4 ~]!2 [f2 ~ ~ ~ c4 ~ ~ ~ f2 ~ ~ f2 ~ ~ <e4 c4> ~]!2]/4")
+    .s("gm_overdriven_guitar:2").adsr("0.01:0.4:0.2:0.4").delay(0.2),
+  note(ARPmelody2).s("saw, gm_fx_atmosphere:0").adsr("0.17:0.2:0.2:0.15").chorus(5).lpf(2500).lpenv(rand.range(0.5,4)),
+  chord("<Am F>").voicing().s("gm_electric_guitar_clean:5").adsr("0.01:0.2:0.2:0.2").echo("<3 2 3 5 7>", 0.125, 0.4),
+  s("ballwhistle:1").struct("[1 0 0 1 0 0 1 0 0 0 1 1 1 0 1 0]/2").gain(0.65).adsr("0.1:0.1:0.1:0.2")
+)
+
+//chorus2??
+let chorus2 = stack(
+  note("<[a2*8,a3*8]!4[f2*8,f3*8]!4>/2").s("gm_synth_bass_2:2").adsr("0.1:0.1:0.1:0.1").chorus(5).lpf(2500).lpenv(rand.range(0.5,4)),
+  note("[[a2 e5 ~ a2 e5 ~ c4 ~ a2 c4 ~ a2 c4 ~ e5 ~]!2 [f2 c5 ~ f2 c5 ~ a4 ~ f2 a4 ~ f2 a4 ~ <c5 e5> ~]!2]/4")
+    .s("gm_overdriven_guitar:2").adsr("0.01:0.4:0.2:0.4"),
+  note(ARPmelody2).s("saw, gm_steel_drums:2, gm_fx_atmosphere:0").adsr("0.17:0.2:0.2:0.15").chorus(5).lpf(2500).lpenv(rand.range(0.5,4)),
+  chord("<Am F>").voicing().s("gm_electric_guitar_clean:5").adsr("0.01:0.2:0.2:0.2").echo("<3 2 3 5 7>", 0.125, 0.4),
+  note("<a3 f3>/2").s("gm_electric_guitar_clean:2, gm_guitar_fret_noise"),
+  note("[~ ~ a4 ~ ~ ~ a4 ~ ~ ~ a4 ~ a4 ~ ~ ~ ~ ~ f4 ~ ~ ~ f4 ~ ~ ~ f4 ~ f4 ~ ~ ~]/2")
+    .s("gm_synth_brass_1").adsr("0.01:0.08:0.1:0.06").gain(0.4),
+  s("ballwhistle:1").struct("[1 0 0 1 0 0 1 0 0 0 1 1 1 0 1 0]/2").gain(0.7).adsr("0.1:0.1:0.1:0.2")
+)
+
+//outro
+let outro = stack(
+  note("<[a2*8,a3*8]!4[f2*8,f3*8]!4>/4").s("gm_synth_bass_2:2").adsr("0.1:0.1:0.1:0.1").chorus(5).lpf(2500).lpenv(rand.range(0.5,4)),
+  note("[[a2 e5 ~ a2 e5 ~ c4 ~ a2 c4 ~ a2 c4 ~ e5 ~]!2 [f2 c5 ~ f2 c5 ~ a4 ~ f2 a4 ~ f2 a4 ~ <c5 e5> ~]!2]/16")
+    .s("gm_overdriven_guitar:2").adsr("0.01:0.4:0.2:0.4"),
+  chord("<Am F>").voicing().s("gm_electric_guitar_clean:5").adsr("0.01:0.2:0.2:0.2").echo("<3 2 3 5 7>", 0.125, 0.4),
+  note("<a3 f3>/2").s("gm_electric_guitar_clean:2, gm_guitar_fret_noise"),
+  s("ballwhistle:1").struct("[1 0 0 1 0 0 1 0 0 0 1 1 1 0 1 0]/2").gain(0.6).adsr("0.1:0.1:0.1:0.2")
+)
+
+
+$: arrange(
+  [4, intro],
+  [4, buildUp],
+  [8, groove],
+  [8, groove2],
+  [4, buildUp],
+  [4, chorus],
+  [4, chorus2],
+  [4, outro]
+)
+
+
+$: s("~ ~ ~ ~ sd ~ ~ ~ ~ ~ sd  <~ sd> ~ ~ ~ ~")//off beat
+$:s("hh ~ ~ hh ~ ~ hh hh").n(2)
+
+ $: s("rim:2(8,16)").degradeBy(0.3).gain(0.3)
+
+ $: s("hh:3").struct("[1 0 0 1 0 0 0 0 0 0 1 0 1 0 0 0 1 0 0 1 0 0 [1 1] 0 0 0 1 0 1 0 [1 1] 1]/2").gain(1.2)
+ $: s("sd:1").struct("[0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 <1 0> 0 <0 1> 0]/2").gain(0.6)
+
+ $: s("ballwhistle:0, ballwhistle:1").speed(1.2).adsr("0.01:0.4:0.15:0.1").struct("0 0 <0 0 1> 0 0 0 0 0 0 0 0 0 0 0 1 0").gain(0.5)
+
+$: s("bd!4").n("<0 0 0 <0 1>>").gain(0.6)
+
+let dhi = stack(
+  s('rim').n(4).struct("[0 0 [1 1] 1]*2").gain(0.2).degradeBy(0.3).sometimesBy(0.3, x=>x.ply(2))
+)
+
+$: arrange(
+  [4, "~"],
+  [8, dhi],
+  [4, "~"]
+)
+
+$: s("[marktrees:0 | marktrees:1 | marktrees:2]/8").gain(0.5).room(0.3)
